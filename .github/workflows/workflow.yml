@@ -38,9 +38,11 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-ui
           haxelib install flixel-addons
+          haxelib install webgl
+          haxelib install faxe
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
-          haxelib install polymod 1.5.2
+          haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
           haxelib list
@@ -78,8 +80,10 @@ jobs:
           haxelib run lime setup
           haxelib install flixel-tools
           haxelib install flixel-ui
+          haxelib install webgl
+          haxelib install faxe
           haxelib install flixel-addons
-          haxelib install polymod 1.5.2
+          haxelib install polymod
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -93,7 +97,7 @@ jobs:
 
   buildWindows:
     runs-on: windows-latest
-    
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2.3.0
@@ -116,7 +120,9 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
-          haxelib install polymod 1.5.2
+          haxelib install webgl
+          haxelib install faxe
+          haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
           haxelib list
@@ -155,7 +161,9 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
-          haxelib install polymod 1.5.2
+          haxelib install webgl
+          haxelib install faxe
+          haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
           haxelib list

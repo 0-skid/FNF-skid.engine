@@ -15,6 +15,8 @@ class Character extends FlxSprite
 
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
+	public var colorP1:String = '0xFF66FF33';
+	public var colorP2:String = '0xFFFF0000';
 
 	public var holdTimer:Float = 0;
 	
@@ -122,6 +124,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
+
 			case 'spooky':
 				tex = Paths.getSparrowAtlas('characters/spooky_kids_assets');
 				frames = tex;
@@ -177,7 +180,9 @@ class Character extends FlxSprite
 				quickAnimAdd('singRIGHT', 'Monster Right note');
 
 				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
+				
 			case 'monster-christmas':
 				tex = Paths.getSparrowAtlas('characters/monsterChristmas');
 				frames = tex;
@@ -188,7 +193,9 @@ class Character extends FlxSprite
 				quickAnimAdd('singRIGHT', 'Monster Right note');
 
 				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
+
 			case 'pico':
 				tex = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
 				frames = tex;
@@ -226,7 +233,7 @@ class Character extends FlxSprite
 				quickAnimAdd('shoot2', 'Pico shoot 2');
 				quickAnimAdd('shoot3', 'Pico shoot 3');
 				quickAnimAdd('shoot4', 'Pico shoot 4');
-				
+
 				loadOffsetFile(curCharacter);
 
 				playAnim('shoot1');

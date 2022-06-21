@@ -29,11 +29,12 @@ class StoryMenuState extends MusicBeatState
 		['Pico', 'Philly-Nice', "Blammed"],
 		['Satin-Panties', "High", "MILF"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
-		['Senpai', 'Roses', 'Thorns']
+		['Senpai', 'Roses', 'Thorns'],
+		['Ugh', 'Guns', 'Stress']
 	];
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
 		['dad', 'bf', 'gf'],
@@ -42,10 +43,11 @@ class StoryMenuState extends MusicBeatState
 		['pico', 'bf', 'gf'],
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
-		['senpai', 'bf', 'gf']
+		['senpai', 'bf', 'gf'],
+		['tankman', 'bf', 'gf']
 	];
 
-	var weekNames:Array<String> = "How to Funk--Daddy Dearest--Spooky Month--Pico--Mommy Must Murder--Red Snow--Hating Simulator ft. Moawling".split("--");
+	var weekNames:Array<String> = "How to Funk--Daddy Dearest--Spooky Month--Pico--Mommy Must Murder--Red Snow--Hating Simulator ft. Moawling--Tankman".split("--");
 
 	var txtWeekTitle:FlxText;
 

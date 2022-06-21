@@ -98,6 +98,8 @@ class PlayState extends MusicBeatState
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
 
+	private var colorP1:flixel.util.FlxColor;
+	private var colorP2:flixel.util.FlxColor;
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
@@ -513,6 +515,74 @@ class PlayState extends MusicBeatState
 		                  bg.scale.set(6, 6);
 		                  add(bg);
 		          }
+				  case 'guns' | 'stress' | 'ugh':
+				  {
+						defaultCamZoom = 0.9;
+
+						curStage = 'tank';
+						
+						var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
+						add(sky);
+						
+						var clouds:BGSprite = new BGSprite('tankClouds', FlxG.random.int(-700, -100), FlxG.random.int(-20, 20), 0.1, 0.1);
+						clouds.active = true;
+						clouds.velocity.x = FlxG.random.float(5, 15);
+						add(clouds);
+						
+						var mountains:BGSprite = new BGSprite('tankMountains', -300, -20, 0.2, 0.2);
+						mountains.setGraphicSize(Std.int(mountains.width * 1.2));
+						mountains.updateHitbox();
+						add(mountains);
+						
+						var buildings:BGSprite = new BGSprite('tankBuildings', -200, 0, 0.3, 0.3);
+						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
+						buildings.updateHitbox();
+						add(buildings);
+						
+						var ruins:BGSprite = new BGSprite('tankRuins', -200, 0, 0.35, 0.35);
+						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
+						ruins.updateHitbox();
+						add(ruins);
+						
+						var smokeL:BGSprite = new BGSprite('smokeLeft', -200, -100, 0.4, 0.4, ['SmokeBlurLeft'], true);
+						add(smokeL);
+						
+						var smokeR:BGSprite = new BGSprite('smokeRight', 1100, -100, 0.4, 0.4, ['SmokeRight'], true);
+						add(smokeR);
+						
+						tankWatchtower = new BGSprite('tankWatchtower', 100, 50, 0.5, 0.5, ['watchtower gradient color']);
+						add(tankWatchtower);
+						
+						tankGround = new BGSprite('tankRolling', 300, 300, 0.5, 0.5, ['BG tank w lighting'], true);
+						add(tankGround);
+						
+						tankmanRun = new FlxTypedGroup<TankmenBG>();
+						add(tankmanRun);
+						
+						var ground:BGSprite = new BGSprite('tankGround', -420, -150);
+						ground.setGraphicSize(Std.int(ground.width * 1.15));
+						ground.updateHitbox();
+						add(ground);
+						moveTank();
+
+						var tankdude0:BGSprite = new BGSprite('tank0', -500, 650, 1.7, 1.5, ['fg']);
+						foregroundSprites.add(tankdude0);
+						
+						var tankdude1:BGSprite = new BGSprite('tank1', -300, 750, 2, 0.2, ['fg']);
+						foregroundSprites.add(tankdude1);
+						
+						var tankdude2:BGSprite = new BGSprite('tank2', 450, 940, 1.5, 1.5, ['foreground']);
+						foregroundSprites.add(tankdude2);
+						
+						var tankdude4:BGSprite = new BGSprite('tank4', 1300, 900, 1.5, 1.5, ['fg']);
+						foregroundSprites.add(tankdude4);
+						
+						var tankdude5:BGSprite = new BGSprite('tank5', 1620, 700, 1.5, 1.5, ['fg']);
+						foregroundSprites.add(tankdude5);
+						
+						var tankdude3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
+						foregroundSprites.add(tankdude3);
+				  }
 		          default:
 		          {
 		                  defaultCamZoom = 0.9;
@@ -745,14 +815,76 @@ class PlayState extends MusicBeatState
 		if (PreferencesMenu.getPref('downscroll'))
 			healthBarBG.y = FlxG.height * 0.1;
 
+		//health colors, opponent side
+		if (SONG.player2 == 'gf')
+		colorP2 = 0xFFA5004D;
+
+		if (SONG.player2 == 'bf')
+		colorP2 = 0xFF31B0D1;
+	
+		if (SONG.player2 == 'dad' || SONG.player2 == 'parents-christmas')
+		colorP2 = 0xFFAF66CE;
+
+		if (SONG.player2 == 'pico')
+		colorP2 = 0xFFB7D855;
+
+		if (SONG.player2 == 'spooky')
+		colorP2 = 0xFFD57E00;
+	
+		if (SONG.player2 == 'mom' || SONG.player2 == 'mom-car')
+		colorP2 = 0xFFD8558E;
+	
+		if (SONG.player2 == 'monster' || SONG.player2 == 'monster-christmas')
+		colorP2 = 0xFFF9FF70;
+
+		if (SONG.player2 == 'senpai' || SONG.player2 == 'senpai-angry')
+		colorP2 = 0xFFFFAA6F;
+
+		if (SONG.player2 == 'spirit')
+		colorP2 = 0xFFFF3C6E;
+
+		if (SONG.player2 == 'bf-pixel')
+		colorP1 = 0xFF7BD6F6;
+
+		//bf side
+		if (SONG.player1 == 'gf')
+		colorP1 = 0xFFA5004D;
+	
+		if (SONG.player1 == 'bf')
+		colorP1 = 0xFF31B0D1;
+		
+		if (SONG.player1 == 'dad' || SONG.player1 == 'parents-christmas')
+		colorP1 = 0xFFAF66CE;
+	
+		if (SONG.player1 == 'pico')
+		colorP1 = 0xFFB7D855;
+	
+		if (SONG.player1 == 'spooky')
+		colorP1 = 0xFFD57E00;
+		
+		if (SONG.player1 == 'mom' || SONG.player1 == 'mom-car')
+		colorP1 = 0xFFD8558E;
+		
+		if (SONG.player1 == 'monster' || SONG.player1 == 'monster-christmas')
+		colorP1 = 0xFFF9FF70;
+	
+		if (SONG.player1 == 'senpai' || SONG.player1 == 'senpai-angry')
+		colorP1 = 0xFFFFAA6F;
+	
+		if (SONG.player1 == 'spirit')
+		colorP1 = 0xFFFF3C6E;
+
+		if (SONG.player1 == 'bf-pixel')
+		colorP1 = 0xFF7BD6F6;
+	
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		healthBar.createFilledBar(colorP2, colorP1);
 		// healthBar
 		add(healthBar);
 
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 300, healthBarBG.y + 30, 0, "", 20);
+		scoreTxt = new FlxText(30, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
@@ -1526,23 +1658,39 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-
-		//so many ifs lol
-		if (PreferencesMenu.getPref('watermark') == true)
-		{
-			if (PreferencesMenu.getPref('diff') == true)
-			{
-				scoreTxt.text = SONG.song + " (" + storyDifficultyText + ") | Score:" + songScore + " | Misses:" + noteMisses;
-			}
-			else
-			{
-				scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
-			}
-		}
-		else
-		{
-			scoreTxt.text = "Score:" + songScore + " | Misses:" + noteMisses;
-		}
+		
+		#if desktop
+if (PreferencesMenu.getPref('watermark') == true)
+        {
+            if (PreferencesMenu.getPref('diff') == true)
+            {
+                scoreTxt.text = SONG.song + " (" + storyDifficultyText + ") | Score:" + songScore + " | Misses:" + noteMisses;
+            }
+            else
+            {
+                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
+            }
+        }
+        else
+        {
+            scoreTxt.text = "Score:" + songScore + " | Misses:" + noteMisses;
+        }
+#end
+if (PreferencesMenu.getPref('watermark') == true)
+        {
+            if (PreferencesMenu.getPref('diff') == true)
+            {
+                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
+            }
+            else
+            {
+                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
+            }
+        }
+        else
+        {
+            scoreTxt.text = "Score:" + songScore + " | Misses:" + noteMisses;
+        }
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -1846,7 +1994,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
-	}
+
+}
 
 	function endSong():Void
 	{

@@ -3,7 +3,7 @@ package;
 import animate.FlxAnimate;
 import shaderslmfao.BuildingShaders;
 import ui.PreferencesMenu;
-import ui.GameplayMenu;
+import MainMenuState;
 import shaderslmfao.ColorSwap;
 #if desktop
 import Discord.DiscordClient;
@@ -98,8 +98,8 @@ class PlayState extends MusicBeatState
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
 
-	private var colorP1:flixel.util.FlxColor;
-	private var colorP2:flixel.util.FlxColor;
+	private var colorP1:flixel.util.FlxColor = 0xFF66FF33;
+	private var colorP2:flixel.util.FlxColor = 0xFFFF0000;
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
@@ -139,6 +139,7 @@ class PlayState extends MusicBeatState
 	var songScore:Int = 0;
 	var noteMisses:Int = 0;
 	var scoreTxt:FlxText;
+	var watermarkTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
 
@@ -816,10 +817,10 @@ class PlayState extends MusicBeatState
 			healthBarBG.y = FlxG.height * 0.1;
 
 		//health colors, opponent side
-		if (SONG.player2 == 'gf')
+		if (SONG.player2 == 'gf' || SONG.player2 == 'gf-car' || SONG.player2 == 'gf-christmas')
 		colorP2 = 0xFFA5004D;
 
-		if (SONG.player2 == 'bf')
+		if (SONG.player2 == 'bf' || SONG.player2 == 'bf-car' || SONG.player2 == 'bf-christmas')
 		colorP2 = 0xFF31B0D1;
 	
 		if (SONG.player2 == 'dad' || SONG.player2 == 'parents-christmas')
@@ -844,13 +845,16 @@ class PlayState extends MusicBeatState
 		colorP2 = 0xFFFF3C6E;
 
 		if (SONG.player2 == 'bf-pixel')
-		colorP1 = 0xFF7BD6F6;
+		colorP2 = 0xFF7BD6F6;
+
+		if (SONG.player2 == 'tankman')
+		colorP2 = 0xFF3F3F3F;
 
 		//bf side
-		if (SONG.player1 == 'gf')
+		if (SONG.player1 == 'gf' || SONG.player1 == 'gf-car' || SONG.player1 == 'gf-christmas')
 		colorP1 = 0xFFA5004D;
 	
-		if (SONG.player1 == 'bf')
+		if (SONG.player1 == 'bf' || SONG.player1 == 'bf-car' || SONG.player1 == 'bf-christmas')
 		colorP1 = 0xFF31B0D1;
 		
 		if (SONG.player1 == 'dad' || SONG.player1 == 'parents-christmas')
@@ -876,6 +880,9 @@ class PlayState extends MusicBeatState
 
 		if (SONG.player1 == 'bf-pixel')
 		colorP1 = 0xFF7BD6F6;
+
+		if (SONG.player1 == 'tankman')
+		colorP1 = 0xFF3F3F3F;
 	
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
@@ -884,10 +891,22 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		scoreTxt = new FlxText(30, healthBarBG.y + 30, 0, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
+
+		#if desktop
+		watermarkTxt = new FlxText(10, scoreTxt.y, 0, SONG.song + " - " + storyDifficultyText + " | skid.engine v" + MainMenuState.engineVer, 20);
+		#elseif html
+		watermarkTxt = new FlxText(10, scoreTxt.y, 0, SONG.song + " | skid.engine v" + MainMenuState.engineVer, 20);
+		#end
+		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
+		watermarkTxt.scrollFactor.set();
+		if (PreferencesMenu.getPref('watermark') == true)
+		{
+			add(watermarkTxt);
+		}
 
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -905,6 +924,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		watermarkTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -984,7 +1004,7 @@ class PlayState extends MusicBeatState
 		var black:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
 		add(black);
-		new FlxVideo('music/ughCutscene.mp4').finishCallback = function()
+		new FlxVideo('music/ughCutscene.webm').finishCallback = function()
 		{
 			remove(black);
 			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.stepCrochet / 1000) * 5, {ease: FlxEase.quadInOut});
@@ -1658,36 +1678,6 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		
-		#if desktop
-if (PreferencesMenu.getPref('watermark') == true)
-        {
-            if (PreferencesMenu.getPref('diff') == true)
-            {
-                scoreTxt.text = SONG.song + " (" + storyDifficultyText + ") | Score:" + songScore + " | Misses:" + noteMisses;
-            }
-            else
-            {
-                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
-            }
-        }
-        else
-        {
-            scoreTxt.text = "Score:" + songScore + " | Misses:" + noteMisses;
-        }
-#end
-if (PreferencesMenu.getPref('watermark') == true)
-        {
-            if (PreferencesMenu.getPref('diff') == true)
-            {
-                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
-            }
-            else
-            {
-                scoreTxt.text = SONG.song + " | Score:" + songScore + " | Misses:" + noteMisses;
-            }
-        }
-        else
         {
             scoreTxt.text = "Score:" + songScore + " | Misses:" + noteMisses;
         }
@@ -2465,7 +2455,7 @@ if (PreferencesMenu.getPref('watermark') == true)
 		var upP = controls.NOTE_UP_P;
 		var rightP = controls.NOTE_RIGHT_P;
 
-		if (GameplayMenu.getGame('ghost') == false)
+		if (PreferencesMenu.getPref('ghost') == false)
 		{	
 			if (leftP)
 				noteMiss(0);

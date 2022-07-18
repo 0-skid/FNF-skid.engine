@@ -18,11 +18,6 @@ class OptionsMenu extends Page
 		{
 			onSwitch.dispatch(PageName.Preferences);
 		});
-		
-		createItem('gameplay', function()
-			{
-				onSwitch.dispatch(PageName.Gameplay);
-			});
 		createItem('exit', exit);
 	}
 

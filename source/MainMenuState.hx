@@ -29,7 +29,9 @@ class MainMenuState extends MusicBeatState
 {
 	var menuItems:MainMenuList;
 
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
+
+	public static var engineVer:String = '0.3.1';
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -99,6 +101,10 @@ class MainMenuState extends MusicBeatState
 		{
 			startExitState(new OptionsState());
 		});
+		menuItems.createItem(null, null, "credits", function()
+		{
+			startExitState(new CreditsState());
+		});
 
 		var pos:Float = (FlxG.height - 160 * (menuItems.length - 1)) / 2;
 		for (i in 0...menuItems.length)
@@ -110,9 +116,16 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "FNF v0.2.8, skid.engine Dev Build", 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 20, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
+		var engineShit:FlxText = new FlxText(5, FlxG.height - 45, 0, "skid.engine v" + engineVer, 12);
+		engineShit.scrollFactor.set();
+		engineShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(engineShit);
+
 		super.create();
 	}
 

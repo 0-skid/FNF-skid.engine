@@ -1,0 +1,9 @@
+[skid.engine Credits]
+skid.xml: Most of the engine stuff
+[504] brandon: Helped with some code
+
+[Friday Night Funkin' Credits]
+ninjamuffin99: Programming
+Kawaisprite: Music
+PhantomArcade: Art/Animation
+evilsk8r: Art Design

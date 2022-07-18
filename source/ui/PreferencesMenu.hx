@@ -24,12 +24,14 @@ class PreferencesMenu extends Page
 		menuCamera.bgColor = FlxColor.TRANSPARENT;
 		camera = menuCamera;
 		add(items = new TextMenuList());
-		createPrefItem('Flashing', 'flashing-menu', true);
-		createPrefItem('Camera Bop', 'camera-zoom', true);
-		createPrefItem('Show FPS', 'fps-counter', true);
-		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Song Watermarks', 'watermark', true);
-		createPrefItem('Difficulty on Watermarks', 'diff', true);
+		createPrefItem('Flashing', 'flashing-menu', '', true);
+		createPrefItem('Camera Bop', 'camera-zoom', '', true);
+		createPrefItem('Show FPS', 'fps-counter', '', true);
+		createPrefItem('Auto Pause', 'auto-pause', '', true);
+		createPrefItem('Watermark Text', 'watermark', '', false);
+		createPrefItem('Downscroll', 'downscroll', '', false);
+		createPrefItem('Middlescroll', 'middlescroll', '', false);
+		createPrefItem('Ghost Tapping', 'ghost', '', false);
 		camFollow = new FlxObject(FlxG.width / 2, 0, 240, 70);
 		if (items != null)
 		{
@@ -37,10 +39,9 @@ class PreferencesMenu extends Page
 		}
 		menuCamera.follow(camFollow, null, 0);
 		menuCamera.deadzone.set(0, 160, menuCamera.width, 40);
-		//menuCamera.minScrollY = 0;
 		items.onChange.add(function(item:TextMenuItem)
 		{
-			camFollow.y = item.y;
+			camFollow.y = item.y - 200;
 		});
 	}
 
@@ -54,9 +55,11 @@ class PreferencesMenu extends Page
 		preferenceCheck('flashing-menu', true);
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
-		preferenceCheck('auto-pause', false);
-		preferenceCheck('watermark', false);
-		preferenceCheck('diff', true);
+		preferenceCheck('auto-pause', true);
+		preferenceCheck('watermark', true);
+		preferenceCheck('downscroll', false);
+		preferenceCheck('middlescroll', false);
+		preferenceCheck('ghost', false);
 		preferenceCheck('master-volume', 1);
 		if (!getPref('fps-counter'))
 		{
@@ -78,7 +81,7 @@ class PreferencesMenu extends Page
 		}
 	}
 
-	public function createPrefItem(label:String, identifier:String, value:Dynamic)
+	public function createPrefItem(label:String, identifier:String, type:String, value:Dynamic)
 	{
 		items.createItem(120, 120 * items.length + 30, label, Bold, function()
 		{
@@ -132,13 +135,10 @@ class PreferencesMenu extends Page
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
+		menuCamera.followLerp = CoolUtil.camLerpShit(0.1);
 		items.forEach(function(item:MenuItem)
 		{
-			if (item == items.members[items.selectedIndex])
-				item.x = 150;
-			else
-				item.x = 120;
+			item.x = 120;
 		});
 	}
 }

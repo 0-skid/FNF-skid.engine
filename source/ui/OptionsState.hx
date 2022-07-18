@@ -25,7 +25,6 @@ class OptionsState extends MusicBeatState
 		var optionsmenu:OptionsMenu = addPage(Options, new OptionsMenu(false));
 		var preferencesmenu:PreferencesMenu = addPage(Preferences, new PreferencesMenu());
 		var controlsmenu:ControlsMenu = addPage(Controls, new ControlsMenu());
-		var gameplaymenu:GameplayMenu = addPage(Gameplay, new GameplayMenu());
 		if (optionsmenu.hasMultipleOptions())
 		{
 			optionsmenu.onExit.add(exitToMainMenu);
@@ -34,10 +33,6 @@ class OptionsState extends MusicBeatState
 				switchPage(Options);
 			});
 			preferencesmenu.onExit.add(function()
-			{
-				switchPage(Options);
-			});
-			gameplaymenu.onExit.add(function()
 			{
 				switchPage(Options);
 			});
